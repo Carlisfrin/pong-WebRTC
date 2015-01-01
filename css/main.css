@@ -1,0 +1,26 @@
+body{ background-color: lightblue; }
+
+canvas{ 
+    background-color: white; 
+}
+
+div{
+    float: left;
+    margin: 0.5%;
+}   
+ 
+#container {
+    width: 500px;
+}
+
+.score {
+    margin-top: 100px;
+}
+
+#scoreA {
+    margin-bottom: 390px;
+}
+
+#localVideo {
+    margin-bottom: 50px;
+}

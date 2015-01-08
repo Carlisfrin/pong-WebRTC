@@ -316,16 +316,16 @@ function moveBall(x, y, incr_x, incr_y){
     if ((Math.abs(y) > heightArena-heightPaddle) && (Math.abs(y) < heightArena))  {
         if (incr_y<0 && y<0) {
             if (hitPaddle(x, posB_x)) {
-                incr_y = -Math.sign(incr_y)*0.005*Math.random();
+                incr_y = -Math.sign(incr_y)*(0.01*Math.random()+0.002);
             }
         } else if (incr_y>0 && y>0) {
             if (hitPaddle(x, posA_x)) {                       
-                incr_y = -Math.sign(incr_y)*0.005*Math.random();
+                incr_y = -Math.sign(incr_y)*(0.01*Math.random()+0.002);
             }
         }
     }
     if (Math.abs(y) > heightArena) {
-        incr_y = -Math.sign(incr_y)*0.005*Math.random();
+        incr_y = -Math.sign(incr_y)*(0.005*Math.random()+0.002);
         checkScore(y);
     }
     return [x+incr_x, y+incr_y, incr_x, incr_y];
@@ -338,8 +338,7 @@ function movePaddle(pos, incr){
     return pos
 }
 
-function drawScene(color)
-{
+function movement() {
     if (!sendButton.disabled) {
         if (isInitiator) {
             posP = moveBall(posP_x, posP_y, incrP_x, incrP_y);
@@ -354,6 +353,9 @@ function drawScene(color)
             sendPos(posB_x, posP_x, posP_y);               
         }
     }
+}
+
+function drawScene(color) {    
 	vertexPositionAttribute = gl.getAttribLocation(glProgram, "aVertexPosition");
     gl.enableVertexAttribArray(vertexPositionAttribute);
 	gl.bindBuffer(gl.ARRAY_BUFFER, trianglesVerticeBuffer);
@@ -376,6 +378,7 @@ function getMatrixUniforms(){
 
 function setMatrixUniforms() {
     gl.uniformMatrix4fv(glProgram.pMatrixUniform, false, pMatrix);
+    movement();
     
     //Ball
     mat4.scale(mvMatrixP, [heightPaddle, heightPaddle, heightPaddle]);

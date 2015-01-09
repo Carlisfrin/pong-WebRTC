@@ -197,7 +197,6 @@ function handleMessage(event) {
       if (Math.abs(posP_y) > heightArena) {
         checkScore(posP_y);
       }
-      trace('Received message: ' + event.data);
     }
   }
   catch(e) {

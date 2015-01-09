@@ -53,19 +53,19 @@ var incrB_x = 0.0;
 //Ball
 var posP_x = 0.0;
 var posP_y = 0.0;
-var incrP_x = 0.005;
-var incrP_y = 0.005;
+var incrP_x = randomBall();
+var incrP_y = randomBall();
 
 //Walls
 //Size
 var shortWall = sideBall;
-var verticalWall = 2*(heightArena + widthPaddle + shortWall);
+var verticalWall = 2*(heightArena + widthPaddle + shortWall) + 0.05;
 var horizontalWall = 2*(widthArena + shortWall);
 //Top
 var posWT_x = 0.0;
 var posWT_y = heightArena + shortWall;
 //Right
-var posWR_x = widthArena + shortWall;
+var posWR_x = widthArena + shortWall - 0.05;
 var posWR_y = 0.0;
 //Bottom
 var posWB_x = 0.0;
@@ -108,6 +108,14 @@ function setupWebGL()
 	gl.viewport(0, 0, canvas.width, canvas.height);
 	mat4.perspective(45, canvas.width / canvas.height, 0.1, 100.0, pMatrix);
 
+    if (isInitiator) {
+        mat4.rotate(pMatrix, 3.141592/8, [0,1,0])
+        mat4.translate(pMatrix, [3,0,0])
+    } else {
+        mat4.rotate(pMatrix, -3.141592/8, [0,1,0])
+        mat4.translate(pMatrix, [-3,0,0])
+    }
+
     //Paddle A
 	mat4.identity(mvMatrixA);
 	mat4.translate(mvMatrixA, [posA_x, posA_y, -7.0]);          
@@ -129,6 +137,10 @@ function setupWebGL()
 	//Left wall
 	mat4.identity(mvMatrixWL);
 	mat4.translate(mvMatrixWL, [posWL_x, posWL_y, -7.0]);              
+}
+
+function rotateCamera(angle) {
+    
 }
 
 function initShaders()
@@ -309,23 +321,27 @@ function hitPaddle(ball, paddle) {
     return ball<paddle+widthPaddle/2 && ball>paddle-widthPaddle/2;
 }
 
+function randomBall() {
+    return 0.03*Math.random()+0.01;
+}
+
 function moveBall(x, y, incr_x, incr_y){
-    if (Math.abs(x) > widthArena) {
-        incr_x = -incr_x;
+    if ((Math.abs(x) > widthArena) && (Math.sign(x)==Math.sign(incr_x))) {
+        incr_x = -Math.sign(x)*Math.abs(incr_x);
     }
     if ((Math.abs(y) > heightArena-heightPaddle) && (Math.abs(y) < heightArena))  {
         if (incr_y<0 && y<0) {
             if (hitPaddle(x, posB_x)) {
-                incr_y = -Math.sign(incr_y)*(0.01*Math.random()+0.002);
+                incr_y = -Math.sign(y)*randomBall();
             }
         } else if (incr_y>0 && y>0) {
             if (hitPaddle(x, posA_x)) {                       
-                incr_y = -Math.sign(incr_y)*(0.01*Math.random()+0.002);
+                incr_y = -Math.sign(y)*randomBall();
             }
         }
     }
     if (Math.abs(y) > heightArena) {
-        incr_y = -Math.sign(incr_y)*(0.005*Math.random()+0.002);
+        incr_y = -Math.sign(y)*randomBall();
         checkScore(y);
     }
     return [x+incr_x, y+incr_y, incr_x, incr_y];

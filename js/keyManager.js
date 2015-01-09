@@ -2,16 +2,18 @@ $(document).ready(function () {
     $('body').keydown(function(e){
         if (e.keyCode == 39) {
             if (isInitiator) {
-                incrA_x = 0.01;
+                incrA_x = 0.05;
             } else {
-                incrB_x = 0.01;
+                incrB_x = 0.05;
             }
         } else if (e.keyCode == 37) {
             if (isInitiator) {
-                incrA_x = -0.01;
+                incrA_x = -0.05;
             } else {
-                incrB_x = -0.01;
+                incrB_x = -0.05;
             }
+        } else if (e.keyCode > 47 && e.keyCode < 53) {
+            rotateCamera(e.keyCode);
         }
     });
     $('body').keyup(function(e){

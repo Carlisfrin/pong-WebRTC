@@ -139,10 +139,6 @@ function setupWebGL()
 	mat4.translate(mvMatrixWL, [posWL_x, posWL_y, -7.0]);              
 }
 
-function rotateCamera(angle) {
-    
-}
-
 function initShaders()
 {
 	//get shader source

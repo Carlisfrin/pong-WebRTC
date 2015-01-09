@@ -12,8 +12,6 @@ $(document).ready(function () {
             } else {
                 incrB_x = -0.05;
             }
-        } else if (e.keyCode > 47 && e.keyCode < 53) {
-            rotateCamera(e.keyCode);
         }
     });
     $('body').keyup(function(e){
